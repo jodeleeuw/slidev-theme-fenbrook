@@ -1,0 +1,40 @@
+{
+  "name": "slidev-theme-fenbrook",
+  "version": "0.1.0",
+  "description": "Warm-dark Slidev theme with diagram, gallery, and annotation components.",
+  "keywords": [
+    "slidev-theme",
+    "slidev"
+  ],
+  "license": "MIT",
+  "author": "Josh de Leeuw",
+  "repository": "github:jodeleeuw/slidev-theme-fenbrook",
+  "files": [
+    "components",
+    "layouts",
+    "styles",
+    "global-top.vue"
+  ],
+  "engines": {
+    "slidev": ">=0.48.0"
+  },
+  "slidev": {
+    "colorSchema": "dark",
+    "defaults": {
+      "highlighter": "shiki",
+      "fonts": {
+        "sans": "Inter",
+        "serif": "Fraunces",
+        "mono": "JetBrains Mono",
+        "weights": "300,400,500,600,700",
+        "italic": true
+      },
+      "themeConfig": {
+        "initials": "jdl",
+        "course": "",
+        "event": "",
+        "date": ""
+      }
+    }
+  }
+}
