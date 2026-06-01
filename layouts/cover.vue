@@ -1,15 +1,14 @@
 <script setup lang="ts">
-import { configs } from '@slidev/client'
+import { useSlots } from 'vue'
 import FitContent from '../components/FitContent.vue'
 
-const tc = (configs.themeConfig ?? {}) as Record<string, string>
+const slots = useSlots()
 </script>
 
 <template>
   <div class="slidev-layout fenbrook-cover">
-    <div class="cover-mark">
+    <div class="cover-mark" aria-hidden="true">
       <span class="sq" />
-      <span class="initials">{{ tc.initials || 'jdl' }}</span>
     </div>
 
     <div class="cover-body">
@@ -21,9 +20,12 @@ const tc = (configs.themeConfig ?? {}) as Record<string, string>
     </div>
 
     <div class="cover-meta">
-      <div v-if="tc.course" class="meta-line">{{ tc.course }}</div>
-      <div v-if="tc.event" class="meta-line">{{ tc.event }}</div>
-      <div v-if="tc.date" class="meta-line meta-date">{{ tc.date }}</div>
+      <div v-if="slots.speaker" class="meta-line meta-speaker">
+        <slot name="speaker" />
+      </div>
+      <div v-if="slots.event" class="meta-line meta-event">
+        <slot name="event" />
+      </div>
     </div>
   </div>
 </template>
@@ -39,11 +41,6 @@ const tc = (configs.themeConfig ?? {}) as Record<string, string>
 .cover-mark {
   display: flex;
   align-items: center;
-  gap: 0.6rem;
-  font-family: 'JetBrains Mono', ui-monospace, monospace;
-  font-size: 0.95rem;
-  color: var(--fenbrook-muted);
-  letter-spacing: 0.04em;
 }
 
 .sq {
@@ -80,13 +77,22 @@ const tc = (configs.themeConfig ?? {}) as Record<string, string>
   display: flex;
   flex-direction: column;
   gap: 0.3rem;
+}
+
+.cover-meta :deep(p) {
+  margin: 0;
+}
+
+.meta-speaker {
+  font-size: 1.15rem;
+  color: var(--fenbrook-fg);
+  letter-spacing: 0.01em;
+}
+
+.meta-event {
   font-family: 'JetBrains Mono', ui-monospace, monospace;
   font-size: 0.95rem;
   color: var(--fenbrook-muted);
   letter-spacing: 0.02em;
-}
-
-.meta-date {
-  color: var(--fenbrook-fg-soft);
 }
 </style>

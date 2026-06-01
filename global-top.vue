@@ -25,8 +25,6 @@ const leftText = computed(() => {
   if (typeof fm.footer === 'string') return fm.footer
   return [tc.course, tc.event].filter(Boolean).join(' · ')
 })
-
-const initials = computed(() => tc.initials || 'jdl')
 </script>
 
 <template>
@@ -36,7 +34,6 @@ const initials = computed(() => tc.initials || 'jdl')
       <span class="page-num">{{ nav.currentSlideNo }} / {{ nav.total }}</span>
       <span class="sig-mark" aria-hidden="true">
         <span class="sq" />
-        <span class="sig-initials">{{ initials }}</span>
       </span>
     </div>
   </div>
@@ -86,10 +83,5 @@ const initials = computed(() => tc.initials || 'jdl')
   width: 0.6rem;
   height: 0.6rem;
   background: var(--fenbrook-accent);
-}
-
-.sig-initials {
-  color: var(--fenbrook-fg-soft);
-  letter-spacing: 0.06em;
 }
 </style>

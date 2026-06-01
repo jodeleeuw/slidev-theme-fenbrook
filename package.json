@@ -30,10 +30,8 @@
         "italic": true
       },
       "themeConfig": {
-        "initials": "jdl",
         "course": "",
-        "event": "",
-        "date": ""
+        "event": ""
       }
     }
   }
