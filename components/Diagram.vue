@@ -632,6 +632,21 @@ function rectRx(item, fallback) {
   return fallback
 }
 
+// Inline shape styling. Merges fill + border overrides into a style object for
+// the shape element, or null when none are set so the default class-based
+// styling stays in control. `stroke` is the border color, `strokeWidth` its
+// thickness (number = user units), `strokeDasharray` the dash pattern (string
+// like "6 4", or a number). Each is applied only when present, so e.g. setting
+// `stroke` on a group recolors its border while keeping the dashed default.
+function shapeStyle(item) {
+  const s = {}
+  if (item.fill != null) s.fill = item.fill
+  if (item.stroke != null) s.stroke = item.stroke
+  if (item.strokeWidth != null) s.strokeWidth = item.strokeWidth
+  if (item.strokeDasharray != null) s.strokeDasharray = item.strokeDasharray
+  return Object.keys(s).length ? s : null
+}
+
 function arrowPoints(item) {
   const { x, y, w, h } = item
   const dir = arrowDirection(item.shape)
@@ -794,9 +809,9 @@ const wrapStyle = computed(() => {
 </template>
 <template v-for="g in groups" :key="`g-${g.id}`">
 <g v-if="isHideMode(g)" v-click-hide="hideDirective(g)" :class="['group', g.style ? `group-${g.style}` : null]" :style="fontStyle(g)">
-<ellipse v-if="g.shape === 'ellipse'" :cx="g.x + g.w / 2" :cy="g.y + g.h / 2" :rx="g.w / 2" :ry="g.h / 2" />
-<polygon v-else-if="isArrowShape(g)" :points="arrowPoints(g)" />
-<rect v-else :x="g.x" :y="g.y" :width="g.w" :height="g.h" :rx="rectRx(g, 4)" />
+<ellipse v-if="g.shape === 'ellipse'" :cx="g.x + g.w / 2" :cy="g.y + g.h / 2" :rx="g.w / 2" :ry="g.h / 2" :style="shapeStyle(g)" />
+<polygon v-else-if="isArrowShape(g)" :points="arrowPoints(g)" :style="shapeStyle(g)" />
+<rect v-else :x="g.x" :y="g.y" :width="g.w" :height="g.h" :rx="rectRx(g, 4)" :style="shapeStyle(g)" />
 <template v-if="textByClickStates(g).length">
 <template v-for="(state, si) in textByClickStates(g)" :key="`s-${si}`">
 <g v-if="state.mode === 'hide-at'" v-click-hide="state.value">
@@ -835,9 +850,9 @@ const wrapStyle = computed(() => {
 </template>
 </g>
 <g v-else v-click="clickDirective(g)" :class="['group', g.style ? `group-${g.style}` : null]" :style="fontStyle(g)">
-<ellipse v-if="g.shape === 'ellipse'" :cx="g.x + g.w / 2" :cy="g.y + g.h / 2" :rx="g.w / 2" :ry="g.h / 2" />
-<polygon v-else-if="isArrowShape(g)" :points="arrowPoints(g)" />
-<rect v-else :x="g.x" :y="g.y" :width="g.w" :height="g.h" :rx="rectRx(g, 4)" />
+<ellipse v-if="g.shape === 'ellipse'" :cx="g.x + g.w / 2" :cy="g.y + g.h / 2" :rx="g.w / 2" :ry="g.h / 2" :style="shapeStyle(g)" />
+<polygon v-else-if="isArrowShape(g)" :points="arrowPoints(g)" :style="shapeStyle(g)" />
+<rect v-else :x="g.x" :y="g.y" :width="g.w" :height="g.h" :rx="rectRx(g, 4)" :style="shapeStyle(g)" />
 <template v-if="textByClickStates(g).length">
 <template v-for="(state, si) in textByClickStates(g)" :key="`s-${si}`">
 <g v-if="state.mode === 'hide-at'" v-click-hide="state.value">
@@ -888,9 +903,9 @@ const wrapStyle = computed(() => {
 </template>
 <template v-for="b in boxes" :key="`b-${b.id}`">
 <g v-if="isHideMode(b)" v-click-hide="hideDirective(b)" :class="['box', b.style ? `box-${b.style}` : null]" :style="fontStyle(b)">
-<ellipse v-if="b.shape === 'ellipse'" :cx="b.x + b.w / 2" :cy="b.y + b.h / 2" :rx="b.w / 2" :ry="b.h / 2" :style="b.fill ? { fill: b.fill } : null" />
-<polygon v-else-if="isArrowShape(b)" :points="arrowPoints(b)" :style="b.fill ? { fill: b.fill } : null" />
-<rect v-else :x="b.x" :y="b.y" :width="b.w" :height="b.h" :rx="rectRx(b, 3)" :style="b.fill ? { fill: b.fill } : null" />
+<ellipse v-if="b.shape === 'ellipse'" :cx="b.x + b.w / 2" :cy="b.y + b.h / 2" :rx="b.w / 2" :ry="b.h / 2" :style="shapeStyle(b)" />
+<polygon v-else-if="isArrowShape(b)" :points="arrowPoints(b)" :style="shapeStyle(b)" />
+<rect v-else :x="b.x" :y="b.y" :width="b.w" :height="b.h" :rx="rectRx(b, 3)" :style="shapeStyle(b)" />
 <template v-if="textByClickStates(b).length">
 <template v-for="(state, si) in textByClickStates(b)" :key="`s-${si}`">
 <g v-if="state.mode === 'hide-at'" v-click-hide="state.value">
@@ -929,9 +944,9 @@ const wrapStyle = computed(() => {
 </template>
 </g>
 <g v-else v-click="clickDirective(b)" :class="['box', b.style ? `box-${b.style}` : null]" :style="fontStyle(b)">
-<ellipse v-if="b.shape === 'ellipse'" :cx="b.x + b.w / 2" :cy="b.y + b.h / 2" :rx="b.w / 2" :ry="b.h / 2" :style="b.fill ? { fill: b.fill } : null" />
-<polygon v-else-if="isArrowShape(b)" :points="arrowPoints(b)" :style="b.fill ? { fill: b.fill } : null" />
-<rect v-else :x="b.x" :y="b.y" :width="b.w" :height="b.h" :rx="rectRx(b, 3)" :style="b.fill ? { fill: b.fill } : null" />
+<ellipse v-if="b.shape === 'ellipse'" :cx="b.x + b.w / 2" :cy="b.y + b.h / 2" :rx="b.w / 2" :ry="b.h / 2" :style="shapeStyle(b)" />
+<polygon v-else-if="isArrowShape(b)" :points="arrowPoints(b)" :style="shapeStyle(b)" />
+<rect v-else :x="b.x" :y="b.y" :width="b.w" :height="b.h" :rx="rectRx(b, 3)" :style="shapeStyle(b)" />
 <template v-if="textByClickStates(b).length">
 <template v-for="(state, si) in textByClickStates(b)" :key="`s-${si}`">
 <g v-if="state.mode === 'hide-at'" v-click-hide="state.value">

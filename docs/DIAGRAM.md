@@ -43,6 +43,9 @@ A rectangle, ellipse, arrow, or rounded-rect with optional text.
 | `shape` | `'rect' \| 'roundRect' \| 'ellipse' \| 'arrow' \| 'rightArrow' \| 'leftArrow' \| 'upArrow' \| 'downArrow'` | Default `'rect'`. Arrows are PPTX-style chunky shapes. `'roundRect'` auto-computes `rx` from min dimension (capped at 30px) unless `rx` is set. |
 | `rx` | `Number` | Corner radius for `'rect'` / `'roundRect'`. |
 | `fill` | `String` | CSS color, applied inline. Otherwise styled via class hooks (see below). |
+| `stroke` | `String` | Border color, applied inline. Otherwise `currentColor` via class hooks. |
+| `strokeWidth` | `Number \| String` | Border thickness (number = viewBox units). Default `1.5`. |
+| `strokeDasharray` | `String \| Number` | Dash pattern, e.g. `'6 4'` for a dashed border. |
 | `style` | `String` | Adds `box-${style}` class for `:deep()` targeting. |
 | `text` | `String \| String[] \| Number` | Static text. A string is split on `\n`. |
 | `lines` | `String[]` | Explicit per-line array — alternative to `text`. |
@@ -58,6 +61,8 @@ A rectangle, ellipse, arrow, or rounded-rect with optional text.
 ## Group
 
 Structurally identical to a box (all the same fields). Rendered with a dashed stroke and 60% opacity; default text is smaller (14px vs. 18px). Use for containers that visually enclose nested boxes — set children's `parent` to the group's `id` so they position relative to it.
+
+Inline border fields (`stroke`, `strokeWidth`, `strokeDasharray`) override only the properties you set, so e.g. `stroke: '#e0a458'` recolors a group's border while keeping the dashed default. Set `strokeDasharray: '0'` to make a group's border solid.
 
 ## Connector
 
