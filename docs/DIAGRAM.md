@@ -49,6 +49,7 @@ A rectangle, ellipse, arrow, or rounded-rect with optional text.
 | `wrap` | `Boolean` | Render text via `<foreignObject>` with CSS word-wrapping. Text auto-centers. |
 | `maxWidth` | `Number` | Max wrapped-text width in px. Implies `wrap`. Defaults to `w - 16` when wrapping. |
 | `textRotate` | `Number \| 'vertical-up' \| 'vertical-down'` | Rotation in CSS degrees (positive = clockwise) or named verticals. |
+| `fontSize` | `Number \| String` | Text size override. A number is treated as `px`; a string is used verbatim (`'1.5em'`, `'20px'`). Overrides the 18px box / 14px group default. Applies to plain, wrapped, and `textByClick` text. |
 | `revealAt` | `Number` | Appear on click N. |
 | `reveal` | `{ from, to? \| until? }` | Range visibility. `to` is **inclusive**, `until` is **exclusive**. |
 | `hideAt` | `Number` | Visible initially, hidden from click N. |
@@ -74,6 +75,7 @@ A line between two endpoints, with optional waypoints, arrows, and label.
 | `label` | `String` | Text along the path. |
 | `labelAt` | `'start' \| 'end' \| Number` | Default `'end'`. Number in `[0, 1]` places the label that fraction of the straight-line distance from `from` to `to`. |
 | `labelOffset` | `{ dx?, dy? }` | Pixel adjustment to label position. |
+| `fontSize` | `Number \| String` | Label text size override (number = px). See Box. |
 | `style` | `String` | Adds `connector-${style}` class. |
 | `revealAt` / `reveal` / `hideAt` | | Same semantics as Box. |
 
@@ -104,6 +106,7 @@ Each axis in a `via` entry accepts:
 | `label` | `String` | Optional label text. |
 | `labelAt` | `'from' \| 'to' \| Number` | Default `'from'` for vertical, `'to'` for horizontal. Number in `[0, 1]` is a fractional position. |
 | `labelOffset` | `{ dx?, dy? }` | Pixel adjustment. |
+| `fontSize` | `Number \| String` | Label text size override (number = px). See Box. |
 | `style` | `String` | Adds `axis-${style}` class. |
 | `revealAt` / `reveal` / `hideAt` | | Same semantics as Box. |
 

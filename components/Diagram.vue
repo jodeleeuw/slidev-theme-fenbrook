@@ -564,6 +564,18 @@ function firstDy(n) {
   return `${-((n - 1) / 2) * 1.2}em`
 }
 
+// Per-item text size. `fontSize` accepts a number (interpreted as px) or any CSS
+// length string ("1.5em", "20px"). It is emitted as the `--diagram-font-size`
+// custom property on the item's <g>; the text/tspan and wrapped-div font-size
+// rules read that variable, overriding the 18px box / 14px group defaults while
+// leaving items without `fontSize` untouched. Returns null so the attribute is
+// omitted when unset.
+function fontStyle(item) {
+  if (item.fontSize == null) return null
+  const fs = typeof item.fontSize === 'number' ? `${item.fontSize}px` : item.fontSize
+  return { '--diagram-font-size': fs }
+}
+
 // Rotation transform for text. Author can pass a numeric angle in CSS degrees
 // (positive = clockwise) or the shorthands `"vertical-up"` / `"vertical-down"`.
 // Returns `null` when no rotation is requested so the attribute is omitted.
@@ -771,17 +783,17 @@ const wrapStyle = computed(() => {
 </g>
 </template>
 <template v-for="(a, ai) in axes" :key="`ax-${ai}`">
-<g v-if="isHideMode(a)" v-click-hide="hideDirective(a)" :class="['axis', a.style ? `axis-${a.style}` : null]">
+<g v-if="isHideMode(a)" v-click-hide="hideDirective(a)" :class="['axis', a.style ? `axis-${a.style}` : null]" :style="fontStyle(a)">
 <line :x1="axisGeometry(a).x1" :y1="axisGeometry(a).y1" :x2="axisGeometry(a).x2" :y2="axisGeometry(a).y2" />
 <text v-if="axisLabelInfo(a)" class="axis-label" :x="axisLabelInfo(a).x" :y="axisLabelInfo(a).y" :style="{ textAnchor: axisLabelInfo(a).anchor, dominantBaseline: axisLabelInfo(a).baseline }">{{ axisLabelInfo(a).text }}</text>
 </g>
-<g v-else v-click="clickDirective(a)" :class="['axis', a.style ? `axis-${a.style}` : null]">
+<g v-else v-click="clickDirective(a)" :class="['axis', a.style ? `axis-${a.style}` : null]" :style="fontStyle(a)">
 <line :x1="axisGeometry(a).x1" :y1="axisGeometry(a).y1" :x2="axisGeometry(a).x2" :y2="axisGeometry(a).y2" />
 <text v-if="axisLabelInfo(a)" class="axis-label" :x="axisLabelInfo(a).x" :y="axisLabelInfo(a).y" :style="{ textAnchor: axisLabelInfo(a).anchor, dominantBaseline: axisLabelInfo(a).baseline }">{{ axisLabelInfo(a).text }}</text>
 </g>
 </template>
 <template v-for="g in groups" :key="`g-${g.id}`">
-<g v-if="isHideMode(g)" v-click-hide="hideDirective(g)" :class="['group', g.style ? `group-${g.style}` : null]">
+<g v-if="isHideMode(g)" v-click-hide="hideDirective(g)" :class="['group', g.style ? `group-${g.style}` : null]" :style="fontStyle(g)">
 <ellipse v-if="g.shape === 'ellipse'" :cx="g.x + g.w / 2" :cy="g.y + g.h / 2" :rx="g.w / 2" :ry="g.h / 2" />
 <polygon v-else-if="isArrowShape(g)" :points="arrowPoints(g)" />
 <rect v-else :x="g.x" :y="g.y" :width="g.w" :height="g.h" :rx="rectRx(g, 4)" />
@@ -822,7 +834,7 @@ const wrapStyle = computed(() => {
 </text>
 </template>
 </g>
-<g v-else v-click="clickDirective(g)" :class="['group', g.style ? `group-${g.style}` : null]">
+<g v-else v-click="clickDirective(g)" :class="['group', g.style ? `group-${g.style}` : null]" :style="fontStyle(g)">
 <ellipse v-if="g.shape === 'ellipse'" :cx="g.x + g.w / 2" :cy="g.y + g.h / 2" :rx="g.w / 2" :ry="g.h / 2" />
 <polygon v-else-if="isArrowShape(g)" :points="arrowPoints(g)" />
 <rect v-else :x="g.x" :y="g.y" :width="g.w" :height="g.h" :rx="rectRx(g, 4)" />
@@ -865,17 +877,17 @@ const wrapStyle = computed(() => {
 </g>
 </template>
 <template v-for="(c, i) in connectors" :key="`c-${i}`">
-<g v-if="isHideMode(c)" v-click-hide="hideDirective(c)" :class="['connector', c.style ? `connector-${c.style}` : null]">
+<g v-if="isHideMode(c)" v-click-hide="hideDirective(c)" :class="['connector', c.style ? `connector-${c.style}` : null]" :style="fontStyle(c)">
 <path :d="pathFor(c)" :marker-start="arrowMarkers(c).start" :marker-end="arrowMarkers(c).end" />
 <text v-if="labelInfo(c)" class="connector-label" :x="labelInfo(c).x" :y="labelInfo(c).y" :style="{ textAnchor: labelInfo(c).anchor }">{{ labelInfo(c).text }}</text>
 </g>
-<g v-else v-click="clickDirective(c)" :class="['connector', c.style ? `connector-${c.style}` : null]">
+<g v-else v-click="clickDirective(c)" :class="['connector', c.style ? `connector-${c.style}` : null]" :style="fontStyle(c)">
 <path :d="pathFor(c)" :marker-start="arrowMarkers(c).start" :marker-end="arrowMarkers(c).end" />
 <text v-if="labelInfo(c)" class="connector-label" :x="labelInfo(c).x" :y="labelInfo(c).y" :style="{ textAnchor: labelInfo(c).anchor }">{{ labelInfo(c).text }}</text>
 </g>
 </template>
 <template v-for="b in boxes" :key="`b-${b.id}`">
-<g v-if="isHideMode(b)" v-click-hide="hideDirective(b)" :class="['box', b.style ? `box-${b.style}` : null]">
+<g v-if="isHideMode(b)" v-click-hide="hideDirective(b)" :class="['box', b.style ? `box-${b.style}` : null]" :style="fontStyle(b)">
 <ellipse v-if="b.shape === 'ellipse'" :cx="b.x + b.w / 2" :cy="b.y + b.h / 2" :rx="b.w / 2" :ry="b.h / 2" :style="b.fill ? { fill: b.fill } : null" />
 <polygon v-else-if="isArrowShape(b)" :points="arrowPoints(b)" :style="b.fill ? { fill: b.fill } : null" />
 <rect v-else :x="b.x" :y="b.y" :width="b.w" :height="b.h" :rx="rectRx(b, 3)" :style="b.fill ? { fill: b.fill } : null" />
@@ -916,7 +928,7 @@ const wrapStyle = computed(() => {
 </text>
 </template>
 </g>
-<g v-else v-click="clickDirective(b)" :class="['box', b.style ? `box-${b.style}` : null]">
+<g v-else v-click="clickDirective(b)" :class="['box', b.style ? `box-${b.style}` : null]" :style="fontStyle(b)">
 <ellipse v-if="b.shape === 'ellipse'" :cx="b.x + b.w / 2" :cy="b.y + b.h / 2" :rx="b.w / 2" :ry="b.h / 2" :style="b.fill ? { fill: b.fill } : null" />
 <polygon v-else-if="isArrowShape(b)" :points="arrowPoints(b)" :style="b.fill ? { fill: b.fill } : null" />
 <rect v-else :x="b.x" :y="b.y" :width="b.w" :height="b.h" :rx="rectRx(b, 3)" :style="b.fill ? { fill: b.fill } : null" />
@@ -974,7 +986,7 @@ const wrapStyle = computed(() => {
   text-anchor: middle;
   dominant-baseline: middle;
   font-family: inherit;
-  font-size: 18px;
+  font-size: var(--diagram-font-size, 18px);
 }
 .diagram .box rect,
 .diagram .box ellipse,
@@ -993,7 +1005,7 @@ const wrapStyle = computed(() => {
   opacity: 0.6;
 }
 .diagram .group text {
-  font-size: 14px;
+  font-size: var(--diagram-font-size, 14px);
   letter-spacing: 0.15em;
   opacity: 0.6;
 }
@@ -1008,7 +1020,7 @@ const wrapStyle = computed(() => {
   opacity: 0.7;
 }
 .diagram .axis text {
-  font-size: 14px;
+  font-size: var(--diagram-font-size, 14px);
   opacity: 0.75;
 }
 /* Wrapped text via <foreignObject>: center the div inside the bbox, match
@@ -1022,14 +1034,14 @@ const wrapStyle = computed(() => {
   text-align: center;
   color: currentColor;
   font-family: inherit;
-  font-size: 18px;
+  font-size: var(--diagram-font-size, 18px);
   line-height: 1.2;
   word-break: break-word;
   overflow-wrap: break-word;
   box-sizing: border-box;
 }
 .diagram .group .diagram-wrap-text {
-  font-size: 14px;
+  font-size: var(--diagram-font-size, 14px);
   letter-spacing: 0.15em;
   opacity: 0.6;
 }
