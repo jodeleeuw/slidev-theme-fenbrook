@@ -433,8 +433,18 @@ function hideValue(item) {
   // Extract the "hide at this click" value if the item is in hide-mode.
   // Returns `null` if the item is a normal show-mode item.
   if (item.hideAt != null) return item.hideAt
-  if (item.reveal && item.reveal.until != null && item.reveal.from == null) {
-    return item.reveal.until
+  const r = item.reveal
+  if (!r) return null
+  // `reveal: { until: B }` (no lower bound) is the documented hideAt alias.
+  if (r.from == null && r.until != null) return r.until
+  // A lower bound of 0 (or less) can't be expressed as a v-click range: Slidev
+  // clamps `0` up to `1`, so `[0, …]` would render as never-visible. A
+  // from-<=0 *bounded* range is really "visible from the start until the upper
+  // bound" — i.e. hide-mode — so collapse it here. (Mirrors what the startAt
+  // shift already does for shifted reveals, keeping both paths consistent.)
+  if (r.from != null && r.from <= 0) {
+    if (r.to != null) return r.to + 1      // `to` is inclusive → hide at to+1
+    if (r.until != null) return r.until    // `until` is exclusive → hide at until
   }
   return null
 }
@@ -445,15 +455,20 @@ function isHideMode(item) {
 
 function clickDirective(item) {
   if (item.reveal && item.reveal.from != null) {
+    const from = item.reveal.from
+    // A from-<=0 lower bound has no real v-click range: bounded forms render as
+    // hide-mode (see hideValue), and an unbounded `from: 0` just means "always
+    // visible" → emit no directive (false → no-op, the always-visible case).
+    if (from <= 0) return false
     // `reveal: { from: A, until: B }` → half-open `[A, B)` (matches Slidev
     // semantics directly: visible from A through B-1).
     if (item.reveal.until != null) {
-      return [item.reveal.from, item.reveal.until]
+      return [from, item.reveal.until]
     }
     // `reveal: { from: A, to: B }` is inclusive — translate to `[A, B + 1]`.
     return item.reveal.to != null
-      ? [item.reveal.from, item.reveal.to + 1]
-      : item.reveal.from
+      ? [from, item.reveal.to + 1]
+      : from
   }
   if (item.revealAt != null)
     return item.revealAt

@@ -139,13 +139,17 @@ The full reveal API on every shape, connector, axis, group, and background:
 | `hideAt: N` | Visible until click N − 1, hidden from click N onward. |
 | `reveal: { until: B }` | Equivalent to `hideAt: B`. |
 
+To show an element **only before the first click**, use `hideAt: 1` (visible at click 0, hidden from click 1). `reveal: { from: 0, to: 0 }` also works and is treated identically (see the `from: 0` note below).
+
 Translates internally to Slidev's `v-click` / `v-click-hide`:
 
 - `revealAt: N` → `v-click="N"`
 - `reveal: { from: A, to: B }` → `v-click="[A, B + 1]"` (Slidev uses half-open ranges; we translate inclusive `to` for you)
 - `hideAt: N` → `v-click-hide="N"`
 
-**Don't pass `0`** as `revealAt` / `from` / `to`. Slidev clamps `v-click="0"` to `1` with a console warning. The component already handles the "always visible" case as the absence of any reveal directive, so just omit the field.
+**Don't pass `0` as `revealAt`.** Slidev clamps `v-click="0"` to `1` with a console warning. The component already handles the "always visible" case as the absence of any reveal directive, so just omit the field.
+
+**A `from: 0` lower bound is handled for you.** Because a `v-click` range can't start at `0` (Slidev clamps it to `1`), the component collapses a bounded `reveal` whose `from <= 0` into hide-mode: `{ from: 0, to: B }` → `hideAt: B + 1`, and `{ from: 0, until: B }` → `hideAt: B`. An unbounded `{ from: 0 }` is just "always visible". This matches how `startAt` already rewrites reveals whose lower bound has scrolled into the past.
 
 **`startAt` interaction:** every threshold is shifted by `-startAt`. Items whose reveals fall entirely in the past get rewritten as "always visible" or dropped. `textByClick` keys shift the same way — the most-recent past entry becomes the new click-0 state (and overwrites the static `text` / `lines` if present).
 
