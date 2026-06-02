@@ -102,11 +102,12 @@ const slots = useSlots()
   align-self: center;
   max-height: 100%;
   overflow: auto;
-  /* Thin, unobtrusive scrollbar so overflow doesn't dominate the layout. */
-  scrollbar-width: thin;
-  scrollbar-color: color-mix(in oklab, var(--fenbrook-fg) 25%, transparent) transparent;
 }
 
+/* Thin, unobtrusive scrollbar so overflow doesn't dominate the layout.
+   Chrome ignores ::-webkit-scrollbar when `scrollbar-width` is set, so the
+   standard property is scoped to Firefox only (below) and Chromium — the
+   Slidev render target — uses the 4px WebKit pseudo-elements. */
 .aside-sidebar::-webkit-scrollbar {
   width: 4px;
   height: 4px;
@@ -123,6 +124,15 @@ const slots = useSlots()
 
 .aside-sidebar::-webkit-scrollbar-thumb:hover {
   background: color-mix(in oklab, var(--fenbrook-fg) 40%, transparent);
+}
+
+/* Firefox: no ::-webkit-scrollbar support, so use the standard property.
+   -moz-appearance is Firefox-only, so this block doesn't apply in Chrome. */
+@supports (-moz-appearance: none) {
+  .aside-sidebar {
+    scrollbar-width: thin;
+    scrollbar-color: color-mix(in oklab, var(--fenbrook-fg) 25%, transparent) transparent;
+  }
 }
 
 /* Default 'rail' style — flush stripe with an accent border on the inner edge. */
