@@ -163,6 +163,10 @@ const slots = useSlots()
 }
 
 .sidebar-inner :deep(li) {
+  /* The global `.slidev-layout li` rule pins li to a fixed size, so the
+     scaled size must be set on li directly (not just ul/ol) to take effect
+     and to let sidebarScale through. */
+  font-size: calc(0.95rem * var(--sidebar-scale, 1));
   margin-bottom: 0.3rem;
 }
 
