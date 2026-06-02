@@ -64,18 +64,16 @@ const content = computed(() => props.text ?? loaded.value)
 
 <style scoped>
 .fenbrook-rawtext {
-  font-family: 'JetBrains Mono', ui-monospace, monospace;
-  font-size: 0.95rem;
-  line-height: 1.55;
+  /* Intentionally unstyled beyond whitespace handling so the component
+     inherits font, color, and spacing from whatever slot it's placed in. */
+  font: inherit;
+  color: inherit;
   white-space: pre-wrap;
   word-break: break-word;
   tab-size: 2;
   margin: 0;
-  padding: 1.1em 1.3em;
-  background: var(--fenbrook-bg-elev);
-  color: var(--fenbrook-fg);
-  border: 1px solid var(--fenbrook-rule);
-  border-radius: 6px;
-  overflow-x: auto;
+  padding: 0;
+  background: none;
+  border: none;
 }
 </style>
