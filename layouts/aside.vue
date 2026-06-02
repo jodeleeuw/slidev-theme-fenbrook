@@ -165,4 +165,11 @@ const slots = useSlots()
 .sidebar-inner :deep(li) {
   margin-bottom: 0.3rem;
 }
+
+/* Inline code sizes relative to its surrounding text (em), so it tracks the
+   scaled paragraph/list font. Scoped here to win over base resets that would
+   otherwise pin it to a fixed size and break sidebarScale. */
+.sidebar-inner :deep(code) {
+  font-size: 0.92em;
+}
 </style>
