@@ -109,8 +109,8 @@ const slots = useSlots()
    standard property is scoped to Firefox only (below) and Chromium — the
    Slidev render target — uses the 4px WebKit pseudo-elements. */
 .aside-sidebar::-webkit-scrollbar {
-  width: 4px;
-  height: 4px;
+  width: 3px;
+  height: 3px;
 }
 
 .aside-sidebar::-webkit-scrollbar-track {
@@ -118,12 +118,12 @@ const slots = useSlots()
 }
 
 .aside-sidebar::-webkit-scrollbar-thumb {
-  background: color-mix(in oklab, var(--fenbrook-fg) 25%, transparent);
+  background: color-mix(in oklab, var(--fenbrook-fg) 45%, transparent);
   border-radius: 4px;
 }
 
 .aside-sidebar::-webkit-scrollbar-thumb:hover {
-  background: color-mix(in oklab, var(--fenbrook-fg) 40%, transparent);
+  background: color-mix(in oklab, var(--fenbrook-fg) 60%, transparent);
 }
 
 /* Firefox: no ::-webkit-scrollbar support, so use the standard property.
@@ -131,7 +131,7 @@ const slots = useSlots()
 @supports (-moz-appearance: none) {
   .aside-sidebar {
     scrollbar-width: thin;
-    scrollbar-color: color-mix(in oklab, var(--fenbrook-fg) 25%, transparent) transparent;
+    scrollbar-color: color-mix(in oklab, var(--fenbrook-fg) 45%, transparent) transparent;
   }
 }
 
