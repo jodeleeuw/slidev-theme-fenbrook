@@ -86,8 +86,14 @@ withDefaults(defineProps<{
   color: var(--fenbrook-fg);
 }
 
-.fenbrook-panel :deep(ol li::marker),
-.fenbrook-panel :deep(ul li::marker) {
+.fenbrook-panel :deep(ol li::marker) {
   color: var(--fenbrook-fg-soft);
+}
+
+/* Bulleted lists use an accent-colored arrow glyph instead of a disc. */
+.fenbrook-panel :deep(ul li::marker) {
+  content: '→  ';
+  color: var(--fenbrook-accent);
+  font-weight: 500;
 }
 </style>

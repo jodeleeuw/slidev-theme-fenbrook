@@ -28,8 +28,14 @@
   color: var(--fenbrook-fg);
 }
 
-.fenbrook-default :deep(ol li::marker),
-.fenbrook-default :deep(ul li::marker) {
+.fenbrook-default :deep(ol li::marker) {
   color: var(--fenbrook-fg-soft);
+}
+
+/* Bulleted lists use an accent-colored arrow glyph instead of a disc. */
+.fenbrook-default :deep(ul li::marker) {
+  content: '→  ';
+  color: var(--fenbrook-accent);
+  font-weight: 500;
 }
 </style>

@@ -135,8 +135,14 @@ const slots = useSlots()
   color: var(--fenbrook-fg);
 }
 
-.tch-col :deep(ol li::marker),
-.tch-col :deep(ul li::marker) {
+.tch-col :deep(ol li::marker) {
   color: var(--fenbrook-fg-soft);
+}
+
+/* Bulleted lists use an accent-colored arrow glyph instead of a disc. */
+.tch-col :deep(ul li::marker) {
+  content: '→  ';
+  color: var(--fenbrook-accent);
+  font-weight: 500;
 }
 </style>

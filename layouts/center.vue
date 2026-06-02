@@ -66,7 +66,14 @@ defineProps<{ width?: string }>()
   line-height: 1.5;
 }
 
-.center-body :deep(li::marker) {
+.center-body :deep(ol li::marker) {
   color: var(--fenbrook-fg-soft);
+}
+
+/* Bulleted lists use an accent-colored arrow glyph instead of a disc. */
+.center-body :deep(ul li::marker) {
+  content: '→  ';
+  color: var(--fenbrook-accent);
+  font-weight: 500;
 }
 </style>
