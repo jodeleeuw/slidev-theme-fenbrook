@@ -1,11 +1,13 @@
 <script setup lang="ts">
 import FitContent from '../components/FitContent.vue'
+
+defineProps<{ width?: string }>()
 </script>
 
 <template>
   <div class="slidev-layout fenbrook-center">
     <FitContent align="center" origin="center">
-      <div class="center-body">
+      <div class="center-body" :style="{ maxWidth: width }">
         <slot />
       </div>
     </FitContent>
