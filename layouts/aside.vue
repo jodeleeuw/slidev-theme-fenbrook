@@ -8,9 +8,12 @@ withDefaults(defineProps<{
   // 'card': sidebar wraps in a rounded-border container with a soft tint and
   // breathing room around it — for PPTX-style rounded callout boxes.
   asideStyle?: 'rail' | 'card'
+  // Multiplier for all sidebar text (headings, body, lists). 1 = default.
+  sidebarScale?: number
 }>(), {
   side: 'right',
   asideStyle: 'rail',
+  sidebarScale: 1,
 })
 
 const slots = useSlots()
@@ -26,7 +29,7 @@ const slots = useSlots()
       </FitContent>
     </div>
 
-    <aside v-if="slots.sidebar" class="aside-sidebar">
+    <aside v-if="slots.sidebar" class="aside-sidebar" :style="{ '--sidebar-scale': sidebarScale }">
       <div class="sidebar-inner">
         <slot name="sidebar" />
       </div>
@@ -121,7 +124,7 @@ const slots = useSlots()
 .sidebar-inner :deep(h2),
 .sidebar-inner :deep(h3) {
   font-family: 'JetBrains Mono', ui-monospace, monospace;
-  font-size: 0.78rem;
+  font-size: calc(0.78rem * var(--sidebar-scale, 1));
   text-transform: uppercase;
   letter-spacing: 0.12em;
   color: var(--fenbrook-accent);
@@ -130,7 +133,7 @@ const slots = useSlots()
 }
 
 .sidebar-inner :deep(p) {
-  font-size: 0.95rem;
+  font-size: calc(0.95rem * var(--sidebar-scale, 1));
   line-height: 1.5;
   color: var(--fenbrook-fg-soft);
   margin: 0 0 0.7rem;
@@ -154,7 +157,7 @@ const slots = useSlots()
 .sidebar-inner :deep(ol) {
   margin: 0 0 0.7rem;
   padding-left: 1.2rem;
-  font-size: 0.95rem;
+  font-size: calc(0.95rem * var(--sidebar-scale, 1));
   line-height: 1.5;
   color: var(--fenbrook-fg-soft);
 }
