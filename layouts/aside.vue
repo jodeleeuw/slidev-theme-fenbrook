@@ -27,11 +27,9 @@ const slots = useSlots()
     </div>
 
     <aside v-if="slots.sidebar" class="aside-sidebar">
-      <FitContent align="top" origin="top left">
-        <div class="sidebar-inner">
-          <slot name="sidebar" />
-        </div>
-      </FitContent>
+      <div class="sidebar-inner">
+        <slot name="sidebar" />
+      </div>
     </aside>
   </div>
 </template>
@@ -100,6 +98,7 @@ const slots = useSlots()
   min-width: 0;
   align-self: center;
   max-height: 100%;
+  overflow: auto;
 }
 
 /* Default 'rail' style — flush stripe with an accent border on the inner edge. */
