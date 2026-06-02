@@ -102,6 +102,27 @@ const slots = useSlots()
   align-self: center;
   max-height: 100%;
   overflow: auto;
+  /* Thin, unobtrusive scrollbar so overflow doesn't dominate the layout. */
+  scrollbar-width: thin;
+  scrollbar-color: color-mix(in oklab, var(--fenbrook-fg) 25%, transparent) transparent;
+}
+
+.aside-sidebar::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+
+.aside-sidebar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.aside-sidebar::-webkit-scrollbar-thumb {
+  background: color-mix(in oklab, var(--fenbrook-fg) 25%, transparent);
+  border-radius: 4px;
+}
+
+.aside-sidebar::-webkit-scrollbar-thumb:hover {
+  background: color-mix(in oklab, var(--fenbrook-fg) 40%, transparent);
 }
 
 /* Default 'rail' style — flush stripe with an accent border on the inner edge. */
@@ -175,5 +196,11 @@ const slots = useSlots()
    otherwise pin it to a fixed size and break sidebarScale. */
 .sidebar-inner :deep(code) {
   font-size: 0.92em;
+}
+
+/* <pre> blocks (e.g. the RawText component) take the sidebar body size and
+   honor sidebarScale; RawText itself is neutral (font: inherit) elsewhere. */
+.sidebar-inner :deep(pre) {
+  font-size: calc(0.95rem * var(--sidebar-scale, 1));
 }
 </style>
