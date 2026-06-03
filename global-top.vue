@@ -34,7 +34,7 @@ const leftText = computed(() => {
     <div class="footer-right">
       <span class="page-num">{{ nav.currentSlideNo }} / {{ nav.total }}</span>
       <span class="sig-mark" aria-hidden="true">
-        <AccentMark :square-size="0.6" :icon-size="1.05" :icons="slideFrontmatter.icons" />
+        <AccentMark :square-size="0.6" :icon-size="1.05" :gap="0.2" :icons="slideFrontmatter.icons" />
       </span>
     </div>
   </div>
