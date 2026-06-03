@@ -193,12 +193,32 @@ const slots = useSlots()
   color: var(--fenbrook-fg-soft);
 }
 
+/* Preflight strips list markers; re-assert them so bullets/numerals show. */
+.sidebar-inner :deep(ul) {
+  list-style: disc;
+}
+
+.sidebar-inner :deep(ol) {
+  list-style: decimal;
+}
+
 .sidebar-inner :deep(li) {
   /* The global `.slidev-layout li` rule pins li to a fixed size, so the
      scaled size must be set on li directly (not just ul/ol) to take effect
      and to let sidebarScale through. */
   font-size: calc(0.95rem * var(--sidebar-scale, 1));
   margin-bottom: 0.3rem;
+}
+
+/* Bulleted lists use the accent-colored arrow glyph, matching the theme. */
+.sidebar-inner :deep(ul li::marker) {
+  content: '→  ';
+  color: var(--fenbrook-accent);
+  font-weight: 500;
+}
+
+.sidebar-inner :deep(ol li::marker) {
+  color: var(--fenbrook-fg-soft);
 }
 
 /* Inline code sizes relative to its surrounding text (em), so it tracks the
