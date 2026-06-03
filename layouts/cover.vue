@@ -1,6 +1,11 @@
 <script setup lang="ts">
 import { useSlots } from 'vue'
 import FitContent from '../components/FitContent.vue'
+import AccentMark from '../components/AccentMark.vue'
+
+// `icons` can be set in the cover slide's frontmatter to override the
+// talk-wide `accentIcons` theme config for this slide only.
+defineProps<{ icons?: string | string[] }>()
 
 const slots = useSlots()
 </script>
@@ -8,7 +13,7 @@ const slots = useSlots()
 <template>
   <div class="slidev-layout fenbrook-cover">
     <div class="cover-mark" aria-hidden="true">
-      <span class="sq" />
+      <AccentMark :square-size="0.8" :icon-size="2.2" :icons="icons" />
     </div>
 
     <div class="cover-body">
@@ -41,13 +46,6 @@ const slots = useSlots()
 .cover-mark {
   display: flex;
   align-items: center;
-}
-
-.sq {
-  display: inline-block;
-  width: 0.8rem;
-  height: 0.8rem;
-  background: var(--fenbrook-accent);
 }
 
 .cover-body {

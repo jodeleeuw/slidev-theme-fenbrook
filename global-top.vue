@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { configs, useNav } from '@slidev/client'
+import AccentMark from './components/AccentMark.vue'
 
 const tc = (configs.themeConfig ?? {}) as Record<string, string>
 const nav = useNav()
@@ -33,7 +34,7 @@ const leftText = computed(() => {
     <div class="footer-right">
       <span class="page-num">{{ nav.currentSlideNo }} / {{ nav.total }}</span>
       <span class="sig-mark" aria-hidden="true">
-        <span class="sq" />
+        <AccentMark :square-size="0.6" :icon-size="1.05" :icons="slideFrontmatter.icons" />
       </span>
     </div>
   </div>
@@ -76,12 +77,5 @@ const leftText = computed(() => {
   display: inline-flex;
   align-items: center;
   gap: 0.4rem;
-}
-
-.sq {
-  display: inline-block;
-  width: 0.6rem;
-  height: 0.6rem;
-  background: var(--fenbrook-accent);
 }
 </style>
