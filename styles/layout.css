@@ -53,6 +53,14 @@ html, body, #app {
   color: var(--fenbrook-fg);
 }
 
+/* A blank line between paragraphs in markdown produces separate <p>s;
+   give consecutive paragraphs breathing room. Sibling selector means no
+   stray leading/trailing space, and layouts that set their own :deep(p)
+   margins (center, quote, aside, …) override this via higher specificity. */
+.slidev-layout p + p {
+  margin-top: 1rem;
+}
+
 .slidev-layout ul,
 .slidev-layout ol {
   padding-left: 1.5em;
