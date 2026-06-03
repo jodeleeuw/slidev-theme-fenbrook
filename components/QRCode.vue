@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { ref, watchEffect, computed } from 'vue'
-import QRCode from 'qrcode'
+// qrcode's browser build exposes named CommonJS exports (no `default`),
+// so import the function directly rather than a default export.
+import { toString as qrToString } from 'qrcode'
 
 // Renders a scannable QR code for a URL (or any text) as an inline SVG.
 //
@@ -44,7 +46,7 @@ watchEffect(async () => {
     return
   }
   try {
-    svg.value = await QRCode.toString(props.href, {
+    svg.value = await qrToString(props.href, {
       type: 'svg',
       errorCorrectionLevel: props.level,
       margin: props.margin,
