@@ -18,6 +18,9 @@
   "engines": {
     "slidev": ">=0.48.0"
   },
+  "dependencies": {
+    "qrcode": "^1.5.4"
+  },
   "slidev": {
     "colorSchema": "dark",
     "defaults": {
