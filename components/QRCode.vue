@@ -1,8 +1,18 @@
 <script setup lang="ts">
 import { ref, watchEffect, computed } from 'vue'
-// qrcode's browser build exposes named CommonJS exports (no `default`),
-// so import the function directly rather than a default export.
-import { toString as qrToString } from 'qrcode'
+
+// qrcode is a CommonJS package whose export shape (default vs named) varies
+// by bundler interop, so static imports of `default`/`toString` can fail
+// Vite's export checks. Load it dynamically and resolve `toString` from
+// whichever shape we get (namespace, default-wrapped, or function-default).
+async function qrToString(text: string, opts: Record<string, unknown>): Promise<string> {
+  const mod: any = await import('qrcode')
+  const fn = mod.toString ?? mod.default?.toString ?? mod.default
+  if (typeof fn !== 'function') {
+    throw new Error('qrcode: toString() not found on module')
+  }
+  return fn(text, opts)
+}
 
 // Renders a scannable QR code for a URL (or any text) as an inline SVG.
 //
