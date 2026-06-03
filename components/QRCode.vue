@@ -1,18 +1,8 @@
 <script setup lang="ts">
 import { ref, watchEffect, computed } from 'vue'
-
-// qrcode is a CommonJS package whose export shape (default vs named) varies
-// by bundler interop, so static imports of `default`/`toString` can fail
-// Vite's export checks. Load it dynamically and resolve `toString` from
-// whichever shape we get (namespace, default-wrapped, or function-default).
-async function qrToString(text: string, opts: Record<string, unknown>): Promise<string> {
-  const mod: any = await import('qrcode')
-  const fn = mod.toString ?? mod.default?.toString ?? mod.default
-  if (typeof fn !== 'function') {
-    throw new Error('qrcode: toString() not found on module')
-  }
-  return fn(text, opts)
-}
+// uqr is a tiny, zero-dependency, pure-ESM QR generator (no CJS/require
+// interop issues). renderSVG returns an SVG string we render inline.
+import { renderSVG } from 'uqr'
 
 // Renders a scannable QR code for a URL (or any text) as an inline SVG.
 //
@@ -49,18 +39,18 @@ const props = withDefaults(defineProps<{
 const svg = ref('')
 const error = ref('')
 
-watchEffect(async () => {
+watchEffect(() => {
   error.value = ''
   if (!props.href) {
     svg.value = ''
     return
   }
   try {
-    svg.value = await qrToString(props.href, {
-      type: 'svg',
-      errorCorrectionLevel: props.level,
-      margin: props.margin,
-      color: { dark: props.dark, light: props.light },
+    svg.value = renderSVG(props.href, {
+      ecc: props.level,
+      border: props.margin,
+      blackColor: props.dark,
+      whiteColor: props.light,
     })
   } catch (e) {
     svg.value = ''
