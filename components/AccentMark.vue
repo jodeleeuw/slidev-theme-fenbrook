@@ -2,6 +2,7 @@
 import { computed } from 'vue'
 import { Icon } from '@iconify/vue'
 import { configs } from '@slidev/client'
+import { parseIconList } from '../utils/accentIcons'
 
 const props = defineProps<{
   /** Square size in rem (used when no icons are configured) */
@@ -20,12 +21,9 @@ const props = defineProps<{
 
 const tc = (configs.themeConfig ?? {}) as Record<string, any>
 
-const iconList = computed<string[]>(() => {
-  const raw = props.icons ?? tc.accentIcons ?? tc.accentIcon
-  if (!raw) return []
-  const arr = Array.isArray(raw) ? raw : String(raw).split(',')
-  return arr.map(s => String(s).trim()).filter(Boolean)
-})
+const iconList = computed<string[]>(() =>
+  parseIconList(props.icons ?? tc.accentIcons ?? tc.accentIcon),
+)
 
 const squareSize = computed(() => props.squareSize ?? 0.8)
 const iconSize = computed(() => props.iconSize ?? squareSize.value * 2.2)

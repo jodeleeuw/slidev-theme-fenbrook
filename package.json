@@ -13,7 +13,9 @@
   "files": [
     "components",
     "layouts",
+    "setup",
     "styles",
+    "utils",
     "global-top.vue"
   ],
   "scripts": {

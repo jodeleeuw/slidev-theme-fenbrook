@@ -42,6 +42,20 @@ themeConfig:
 When `accentIcons` is empty (the default), the original square is shown — so
 existing decks are unaffected.
 
+## Favicon
+
+The first icon in `accentIcons` also becomes the browser-tab favicon, drawn in
+the accent color. Per-slide `icons` overrides don't affect it. To use your own
+favicon instead, set `favicon` in the headmatter; the theme leaves any explicit
+value alone:
+
+```yaml
+---
+theme: fenbrook
+favicon: ./my-icon.png
+---
+```
+
 ## Override for a single slide
 
 Any slide can set its own `icons` in that slide's frontmatter, which overrides
